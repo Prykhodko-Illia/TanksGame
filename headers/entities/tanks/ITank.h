@@ -6,9 +6,9 @@ public:
     using intPair = std::pair<int, int>;
 
     virtual ~ITank() = 0;
-    virtual void takeDamage(int amount) = 0;
-
+    virtual bool takeDamage(int amount) = 0;
     virtual void shoot() = 0;
+
     void move(intPair const &moveVector);
 
     int getHealth() const;

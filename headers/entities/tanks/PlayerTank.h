@@ -2,7 +2,8 @@
 #include "ITank.h"
 
 class PlayerTank : public ITank{
-
+private:
+    bool m_wasSaved = false;
 public:
-    void takeDamage(int damage) final;
+    bool takeDamage(int damage) final;
 };
