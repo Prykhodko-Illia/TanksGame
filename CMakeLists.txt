@@ -13,7 +13,14 @@ link_directories(${SFML_ROOT}/lib)
 add_executable(TanksGame main.cpp
         models/managers/GameManager.cpp
         models/managers/Renderer.cpp
-        models/managers/TanksGame.cpp)
+        models/managers/TanksGame.cpp
+        models/factories/tanks/EnemyTankFactory.cpp
+        models/factories/tanks/PlayerTankFactory.cpp
+        models/entities/Map.cpp
+        models/entities/Block.cpp
+        models/entities/tanks/PlayerTank.cpp
+        models/entities/tanks/ITank.cpp
+        models/entities/tanks/EnemyTank.cpp)
 
 target_link_libraries(TanksGame
         sfml-graphics

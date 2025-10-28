@@ -5,9 +5,10 @@ class ITank {
 public:
     using intPair = std::pair<int, int>;
 
-    virtual ~ITank() = 0;
+    ITank(int health, int damage);
+    virtual ~ITank() = default;
     virtual bool takeDamage(int amount) = 0;
-    virtual void shoot() = 0;
+    // virtual void shoot() = 0;
 
     void move(intPair const &moveVector);
 
@@ -15,6 +16,7 @@ public:
     void setHealth(int value);
 
     int getDamage() const;
+    void setDamage(int value);
     intPair getPosition() const;
 
 private:

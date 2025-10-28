@@ -4,6 +4,6 @@
 
 class TankFactory {
 public:
-    virtual ~TankFactory() = 0;
-    virtual std::unique_ptr<ITank> createTank() const = 0;
+    virtual ~TankFactory() = default;
+    virtual std::unique_ptr<ITank> createTank(int health, int damage) const = 0;
 };

@@ -1,5 +1,11 @@
 ﻿#include "../../../headers/entities/tanks/PlayerTank.h"
 
+PlayerTank::PlayerTank(const int health, const int damage)
+    : ITank(health, damage)
+{
+
+}
+
 bool PlayerTank::takeDamage(const int damage) {
     int newHealth = this->getHealth() - damage;
 
