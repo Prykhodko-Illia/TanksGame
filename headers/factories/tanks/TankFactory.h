@@ -5,5 +5,5 @@
 class TankFactory {
 public:
     virtual ~TankFactory() = default;
-    virtual std::unique_ptr<ITank> createTank(int health, int damage) const = 0;
+    virtual std::unique_ptr<ITank> createTank(int health, int damage, std::pair<int, int> position) const = 0;
 };

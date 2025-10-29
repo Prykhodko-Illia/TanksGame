@@ -1,9 +1,15 @@
 ﻿#pragma once
+#include <memory>
+#include "../factories/tanks/PlayerTankFactory.h"
 
 class TanksGame {
 private:
+    static constexpr int PLAYER_HEALTH = 25;
+    static constexpr int PLAYER_DAMAGE = 10;
 
+    std::unique_ptr<ITank> m_player{};
 public:
-    TanksGame();
+    // TanksGame();
     void init();
 };
+

@@ -1,5 +1,6 @@
 ﻿#include "../../headers/managers/GameManager.h"
 
+
 bool GameManager::init() {
     if (!m_renderer.initWindow()) {
         return false;

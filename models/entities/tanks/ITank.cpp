@@ -1,7 +1,9 @@
-﻿#include "../../../headers/entities/tanks/ITank.h"
+﻿#include <utility>
 
-ITank::ITank(const int health, const int damage)
-    : m_health(health), m_damage(damage) {}
+#include "../../../headers/entities/tanks/ITank.h"
+
+ITank::ITank(const int health, const int damage, intPair position)
+    : m_health(health), m_damage(damage), m_position(std::move(position)) {}
 
 void ITank::move(intPair const &moveVector) {
     m_position.first += moveVector.first;

@@ -6,7 +6,7 @@ int main() {
     // gm.init();
     // gm.run();
 
-    auto const map = generateMap(800, 1000, 0.03, 10);
+    auto const map = generateMap(800, 1000, 0.03, 15);
     map->printMap();
     return 0;
 }

@@ -1,7 +1,7 @@
 ﻿#include "../../../headers/entities/tanks/PlayerTank.h"
 
-PlayerTank::PlayerTank(const int health, const int damage)
-    : ITank(health, damage)
+PlayerTank::PlayerTank(const int health, const int damage, intPair position)
+    : ITank(health, damage, std::move(position))
 {
 
 }
