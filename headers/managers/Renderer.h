@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "AssetManager.h"
 #include <SFML/Graphics.hpp>
+#include "../../structs/EntityRenderInfo.h"
 
 class Renderer {
 private:
@@ -20,7 +21,7 @@ public:
 
     void close();
     void clear();
-    void draw();
+    void draw(const EntityRenderInfo &object);
     void display();
 };
 

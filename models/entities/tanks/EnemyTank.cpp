@@ -2,8 +2,8 @@
 
 #include <random>
 
-EnemyTank::EnemyTank(const int health, const int damage, intPair position)
-    : ITank(health, damage, std::move(position))
+EnemyTank::EnemyTank(const int health, const int damage, floatPair position, const float rotation)
+    : ITank(health, damage, std::move(position), rotation)
 {
     std::random_device rd;
     std::mt19937 gen(rd());

@@ -1,27 +1,37 @@
 ﻿#pragma once
 #include <utility>
+#include <cmath>
+#include "../../../structs/EntityRenderInfo.h"
+#include "../../../headers/factories/ProjectileFactory.h"
+#include "../../entities/Irenderable.h"
 
-class ITank {
+
+class ITank : public IRenderable {
 public:
-    using intPair = std::pair<int, int>;
+    using floatPair = std::pair<float, float>;
 
-    ITank(int health, int damage, intPair position);
+    ITank(int health, int damage, floatPair position, float rotation);
     virtual ~ITank() = default;
     virtual bool takeDamage(int amount) = 0;
-    // virtual void shoot() = 0;
 
-    void move(intPair const &moveVector);
+    std::unique_ptr<Projectile> shoot() const;
+    void move(floatPair const &moveVector);
+    void rotate(float value);
 
     int getHealth() const;
     void setHealth(int value);
 
     int getDamage() const;
     void setDamage(int value);
-    intPair getPosition() const;
+
+    floatPair getPosition() const;
+    float getRotation() const;
+    EntityRenderInfo getRenderInfo() final;
 
 private:
     int m_health = 0;
     int m_damage = 0;
 
-    intPair m_position{};
+    float m_rotation = 0;
+    floatPair m_position{};
 };

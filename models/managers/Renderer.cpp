@@ -22,8 +22,18 @@ void Renderer::clear() {
     m_window.clear();
 }
 
-void Renderer::draw() {
-    // m_window.draw();
+void Renderer::draw(EntityRenderInfo const &object) {
+    float width = 60.0f * object.scaleValue;
+    float height = 50.0f * object.scaleValue;
+
+    sf::RectangleShape sprite(sf::Vector2f(width, height));
+    sprite.setFillColor(sf::Color::Red);
+    sprite.setOrigin(width / 2, height / 2);
+    sprite.setPosition(object.posX, object.posY);
+    sprite.setRotation(object.rotation);
+    sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+
+    m_window.draw(sprite);
 }
 
 void Renderer::display() {

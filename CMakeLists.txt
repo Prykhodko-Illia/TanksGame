@@ -20,7 +20,8 @@ add_executable(TanksGame main.cpp
         models/entities/Block.cpp
         models/entities/tanks/PlayerTank.cpp
         models/entities/tanks/ITank.cpp
-        models/entities/tanks/EnemyTank.cpp)
+        models/entities/tanks/EnemyTank.cpp
+        models/entities/Projectile.cpp)
 
 target_link_libraries(TanksGame
         sfml-graphics

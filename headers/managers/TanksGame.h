@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <memory>
 #include "../factories/tanks/PlayerTankFactory.h"
+#include "../../structs/EntityRenderInfo.h"
 
 class TanksGame {
 private:
@@ -11,5 +12,7 @@ private:
 public:
     // TanksGame();
     void init();
+
+    PlayerTank* getPlayerTank();
 };
 
