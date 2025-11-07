@@ -4,5 +4,5 @@
 class IRenderable {
 public:
     virtual ~IRenderable() = default;
-    virtual EntityRenderInfo getRenderInfo() = 0;
+    virtual EntityRenderInfo getRenderInfo() const = 0;
 };

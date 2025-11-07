@@ -10,7 +10,7 @@ enum class BlockType {
     COUNT = 4
 };
 
-class Block : IRenderable {
+class Block : public IRenderable {
 private:
     BlockType m_type{};
 
@@ -22,5 +22,5 @@ public:
 
     BlockType getType() const;
     void takeDamage();
-    EntityRenderInfo getRenderInfo() final;
+    EntityRenderInfo getRenderInfo() const final;
 };

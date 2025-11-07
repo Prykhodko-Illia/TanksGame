@@ -31,7 +31,7 @@ void Block::takeDamage() {
     --m_durability;
 }
 
-EntityRenderInfo Block::getRenderInfo() {
+EntityRenderInfo Block::getRenderInfo() const {
     const auto [first, second] = m_position;
 
     std::string textureId{};

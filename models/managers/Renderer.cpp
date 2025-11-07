@@ -28,11 +28,22 @@ void Renderer::draw(const std::vector<EntityRenderInfo> &entities) {
         float height = 50.0f * obj.scaleValue;
 
         sf::RectangleShape sprite(sf::Vector2f(width, height));
-        sprite.setFillColor(sf::Color::Red);
         sprite.setOrigin(width / 2, height / 2);
         sprite.setPosition(obj.posX, obj.posY);
         sprite.setRotation(obj.rotation);
         sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+
+        if (obj.textureId == "bushBlock") {
+            sprite.setFillColor(sf::Color::Green);
+        } else if (obj.textureId == "woodBlock") {
+            sprite.setFillColor(sf::Color{150, 75, 0});
+        } else if (obj.textureId == "brickBlock") {
+            sprite.setFillColor(sf::Color{100, 0, 35});
+        } else if (obj.textureId == "playerTank") {
+            sprite.setFillColor(sf::Color::Magenta);
+        } else if (obj.textureId == "projectile") {
+            sprite.setFillColor(sf::Color::Red);
+        }
 
         m_window.draw(sprite);
     }

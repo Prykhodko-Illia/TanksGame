@@ -59,7 +59,7 @@ float ITank::getRotation() const {
     return m_rotation;
 }
 
-EntityRenderInfo ITank::getRenderInfo() {
+EntityRenderInfo ITank::getRenderInfo() const {
     const auto [first, second] = this->getPosition();
     EntityRenderInfo info {
         first,

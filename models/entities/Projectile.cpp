@@ -18,7 +18,7 @@ void Projectile::update(const float deltaTime) {
     m_position = {newX, newY};
 }
 
-EntityRenderInfo Projectile::getRenderInfo() {
+EntityRenderInfo Projectile::getRenderInfo() const {
     const auto [first, second] = m_position;
     EntityRenderInfo info {
         first,

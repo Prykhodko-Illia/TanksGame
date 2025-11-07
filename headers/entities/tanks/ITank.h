@@ -26,7 +26,7 @@ public:
 
     floatPair getPosition() const;
     float getRotation() const;
-    EntityRenderInfo getRenderInfo() final;
+    EntityRenderInfo getRenderInfo() const final;
 
 private:
     int m_health = 0;

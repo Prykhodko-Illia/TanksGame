@@ -6,7 +6,8 @@ void TanksGame::init() {
         m_player = std::move(playerTankF.createTank(PLAYER_HEALTH, PLAYER_DAMAGE, {50, 50}, 0));
     }
 
-    m_map = generateMap(800, 1000, 0.03, 15);
+    m_map = generateMap(800, 1000, 0.02, 15);
+    m_map->printMap();
 }
 
 void TanksGame::update(const float deltaTime) {
@@ -49,11 +50,16 @@ void TanksGame::playerRotate(const float deltaTime, const bool clockWise) {
 std::vector<EntityRenderInfo> TanksGame::getEntitiesRenderInfo() {
     std::vector<EntityRenderInfo> info{};
 
-    // for (const auto &row : m_map->getGrid()) {
-    //     for (const auto &cell : row) {
-    //         info.push_back(cell.getRenderInfo());
-    //     }
-    // }
+    const auto & grid = m_map->getGrid();
+
+    for (auto &row : grid) {
+        for (auto &cell : row) {
+            const auto &renderInfo = cell.getRenderInfo();
+            if (!renderInfo.textureId.empty()) {
+                info.push_back(renderInfo);
+            }
+        }
+    }
 
     for (const auto &p : m_projectiles) {
         info.push_back(p->getRenderInfo());

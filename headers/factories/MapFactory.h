@@ -51,8 +51,8 @@ inline void fillGrid(const std::unique_ptr<Map> &map, const int width, const int
     float posY = 0;
     auto &grid = map->getGrid();
 
-    const float widthIncrement = width * scaleValue;
-    const float heightIncrement = height * scaleValue;
+    const float widthIncrement = 1 / scaleValue;
+    const float heightIncrement = 1 / scaleValue;
 
     for (size_t i = 0; i < width; ++i) {
         for (size_t j = 0; j < height; ++j) {

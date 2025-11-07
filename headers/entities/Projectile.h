@@ -16,5 +16,5 @@ public:
     Projectile(const floatPair &position, int damage, float rotation);
     void update(float deltaTime);
 
-    EntityRenderInfo getRenderInfo() final;
+    EntityRenderInfo getRenderInfo() const final;
 };
