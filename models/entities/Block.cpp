@@ -30,3 +30,32 @@ BlockType Block::getType() const {
 void Block::takeDamage() {
     --m_durability;
 }
+
+EntityRenderInfo Block::getRenderInfo() {
+    const auto [first, second] = m_position;
+
+    std::string textureId{};
+    switch (m_type) {
+        case (BlockType::Bush):
+            textureId = "bushBlock";
+            break;
+        case (BlockType::Wood):
+            textureId = "woodBlock";
+            break;
+        case (BlockType::Brick):
+            textureId = "brickBlock";
+            break;
+        default:
+            return {};
+    }
+
+    EntityRenderInfo info {
+        first,
+        second,
+        0,
+        0.45,
+        textureId
+    };
+
+    return info;
+}

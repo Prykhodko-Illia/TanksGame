@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <utility>
+#include "IRenderable.h"
 
 enum class BlockType {
     Empty = -1,
@@ -9,7 +10,7 @@ enum class BlockType {
     COUNT = 4
 };
 
-class Block {
+class Block : IRenderable {
 private:
     BlockType m_type{};
 
@@ -21,4 +22,5 @@ public:
 
     BlockType getType() const;
     void takeDamage();
+    EntityRenderInfo getRenderInfo() final;
 };

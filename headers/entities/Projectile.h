@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <utility>
-#include "../entities/Irenderable.h"
+#include "Irenderable.h"
 
 class Projectile : public IRenderable {
 

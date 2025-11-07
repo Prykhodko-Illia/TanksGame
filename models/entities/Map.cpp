@@ -1,5 +1,4 @@
 ﻿#include "../../headers/entities/Map.h"
-
 #include <iostream>
 
 Map::Map(const int width, const int height) {

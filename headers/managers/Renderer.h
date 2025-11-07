@@ -21,7 +21,7 @@ public:
 
     void close();
     void clear();
-    void draw(const EntityRenderInfo &object);
+    void draw(const std::vector<EntityRenderInfo> &entities);
     void display();
 };
 

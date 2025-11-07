@@ -22,18 +22,20 @@ void Renderer::clear() {
     m_window.clear();
 }
 
-void Renderer::draw(EntityRenderInfo const &object) {
-    float width = 60.0f * object.scaleValue;
-    float height = 50.0f * object.scaleValue;
+void Renderer::draw(const std::vector<EntityRenderInfo> &entities) {
+    for (auto &obj : entities) {
+        float width = 60.0f * obj.scaleValue;
+        float height = 50.0f * obj.scaleValue;
 
-    sf::RectangleShape sprite(sf::Vector2f(width, height));
-    sprite.setFillColor(sf::Color::Red);
-    sprite.setOrigin(width / 2, height / 2);
-    sprite.setPosition(object.posX, object.posY);
-    sprite.setRotation(object.rotation);
-    sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+        sf::RectangleShape sprite(sf::Vector2f(width, height));
+        sprite.setFillColor(sf::Color::Red);
+        sprite.setOrigin(width / 2, height / 2);
+        sprite.setPosition(obj.posX, obj.posY);
+        sprite.setRotation(obj.rotation);
+        sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 
-    m_window.draw(sprite);
+        m_window.draw(sprite);
+    }
 }
 
 void Renderer::display() {
