@@ -6,7 +6,7 @@ bool GameManager::init() {
         return false;
     }
 
-    m_game.init();
+    m_game.init(m_renderer.getWindowSize());
 
     return true;
 }

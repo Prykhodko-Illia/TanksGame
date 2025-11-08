@@ -45,7 +45,7 @@ inline BlockType getGeneratedType(const std::vector<std::vector<Block>> &grid, c
     return type;
 }
 
-inline void fillGrid(const std::unique_ptr<Map> &map, const int width, const int height, const float scaleValue, const int density) {
+inline void fillGrid(const std::unique_ptr<Map> &map, const float width, const float height, const float scaleValue, const int density) {
 
     float posX = 0;
     float posY = 0;
@@ -56,7 +56,7 @@ inline void fillGrid(const std::unique_ptr<Map> &map, const int width, const int
 
     for (size_t i = 0; i < width; ++i) {
         for (size_t j = 0; j < height; ++j) {
-            auto const block = createBlock(getGeneratedType(grid, i, j, density), posX, posY);
+            auto const block = createBlock(getGeneratedType(grid, i, j, density), posX, posY, widthIncrement, heightIncrement);
             grid[i][j] = block;
 
             posX += heightIncrement;
@@ -67,7 +67,7 @@ inline void fillGrid(const std::unique_ptr<Map> &map, const int width, const int
     }
 }
 
-inline std::unique_ptr<Map> generateMap(const int width, const int height, const float scaleValue, const int density) {
+inline std::unique_ptr<Map> generateMap(const float width, const float height, const float scaleValue, const int density) {
     const float newWidth = width * scaleValue;
     const float newHeight = height * scaleValue;
 

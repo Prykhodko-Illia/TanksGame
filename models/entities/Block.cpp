@@ -2,8 +2,8 @@
 
 Block::Block() : m_type(BlockType::Empty) {}
 
-Block::Block(BlockType const type, const float posX, const float posY)
-    : m_type(type), m_position({posX, posY})
+Block::Block(BlockType const type, const float posX, const float posY, const float width, const float height)
+    : m_type(type), m_position({posX, posY}), m_width(width), m_height(height)
 {
     switch (type) {
         case BlockType::Bush:
@@ -53,8 +53,11 @@ EntityRenderInfo Block::getRenderInfo() const {
         first,
         second,
         0,
-        0.45,
-        textureId
+        m_width,
+        m_height,
+        1,
+        textureId,
+        false
     };
 
     return info;

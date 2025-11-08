@@ -5,8 +5,8 @@
 
 class Renderer {
 private:
-    static constexpr int m_windowWidth = 900;
-    static constexpr int m_windowHeight = 800;
+    static constexpr int WINDOW_WIDTH = 900;
+    static constexpr int WINDOW_HEIGHT = 800;
 
     sf::RenderWindow m_window{};
     TextureManager m_textures{};
@@ -23,5 +23,7 @@ public:
     void clear();
     void draw(const std::vector<EntityRenderInfo> &entities);
     void display();
+
+    std::pair<float, float> getWindowSize() const;
 };
 

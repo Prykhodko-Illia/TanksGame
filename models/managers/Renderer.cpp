@@ -1,7 +1,7 @@
 ﻿#include "../../headers/managers/Renderer.h"
 
 bool Renderer::initWindow() {
-    m_window.create(sf::VideoMode(m_windowWidth, m_windowHeight), "TanksGame");
+    m_window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "TanksGame");
 
     return true;
 }
@@ -24,11 +24,13 @@ void Renderer::clear() {
 
 void Renderer::draw(const std::vector<EntityRenderInfo> &entities) {
     for (auto &obj : entities) {
-        float width = 60.0f * obj.scaleValue;
-        float height = 50.0f * obj.scaleValue;
+        float width = obj.width;
+        float height = obj.height;
 
         sf::RectangleShape sprite(sf::Vector2f(width, height));
-        sprite.setOrigin(width / 2, height / 2);
+        if (obj.isCentered) {
+            sprite.setOrigin(width / 2, height / 2);
+        }
         sprite.setPosition(obj.posX, obj.posY);
         sprite.setRotation(obj.rotation);
         sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
@@ -51,4 +53,8 @@ void Renderer::draw(const std::vector<EntityRenderInfo> &entities) {
 
 void Renderer::display() {
     m_window.display();
+}
+
+std::pair<float, float> Renderer::getWindowSize() const {
+    return {WINDOW_WIDTH, WINDOW_HEIGHT};
 }

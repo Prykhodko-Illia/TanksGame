@@ -16,9 +16,10 @@ private:
 
     std::pair<float, float> m_position{};
     int m_durability = 0;
+    float m_width = 0, m_height = 0;
 public:
     Block();
-    Block(BlockType type, float posX, float posY);
+    Block(BlockType type, float posX, float posY, float width, float height);
 
     BlockType getType() const;
     void takeDamage();

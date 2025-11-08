@@ -1,12 +1,12 @@
 ﻿#include "../../headers/managers/TanksGame.h"
 
-void TanksGame::init() {
+void TanksGame::init(const std::pair<float, float> &windowSize) {
     {
         auto const playerTankF = PlayerTankFactory();
         m_player = std::move(playerTankF.createTank(PLAYER_HEALTH, PLAYER_DAMAGE, {50, 50}, 0));
     }
 
-    m_map = generateMap(800, 1000, 0.02, 15);
+    m_map = generateMap(windowSize.first, windowSize.second, 0.025, 10);
     m_map->printMap();
 }
 
@@ -39,7 +39,7 @@ void TanksGame::playerMove(const std::string &direction, const float deltaTime) 
     if (direction == "up") {
         m_player->move({dx * moveValue, dy * moveValue});
     } else if (direction == "down") {
-        m_player->move({-(dx * moveValue), -(dy * moveValue)});
+        m_player->move({-(dx * moveValue) * 0.7, -(dy * moveValue) * 0.7});
     }
 }
 

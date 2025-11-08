@@ -65,8 +65,11 @@ EntityRenderInfo ITank::getRenderInfo() const {
         first,
         second,
         m_rotation,
+        TANK_WIDTH,
+        TANK_HEIGHT,
         1,
-        "playerTank"
+        "playerTank",
+        true
     };
 
     return info;

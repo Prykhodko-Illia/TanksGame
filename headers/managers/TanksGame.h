@@ -19,7 +19,7 @@ private:
     std::unique_ptr<Map> m_map{};
     float m_timerSpawn = 3.0f;
 public:
-    void init();
+    void init(const std::pair<float, float> &windowSize);
     void update(float deltaTime);
 
     PlayerTank* getPlayerTank();

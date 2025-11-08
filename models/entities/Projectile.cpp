@@ -9,8 +9,8 @@ Projectile::Projectile(const floatPair &position, const int damage, const float 
 void Projectile::update(const float deltaTime) {
     float radians = m_rotation * M_PI / 180.0;
 
-    float velocityX = cos(radians) * m_speed;
-    float velocityY = sin(radians) * m_speed;
+    float velocityX = cos(radians) * PROJECTILE_SPEED;
+    float velocityY = sin(radians) * PROJECTILE_SPEED;
 
     float newX = m_position.first + velocityX * deltaTime;
     float newY = m_position.second + velocityY * deltaTime;
@@ -24,8 +24,11 @@ EntityRenderInfo Projectile::getRenderInfo() const {
         first,
         second,
         m_rotation,
+        PROJECTILE_SIZE,
+         PROJECTILE_SIZE,
         0.2,
-        "projectile"
+        "projectile",
+        true
     };
 
     return info;
