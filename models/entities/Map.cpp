@@ -1,7 +1,8 @@
 ﻿#include "../../headers/entities/Map.h"
 #include <iostream>
 
-Map::Map(const int width, const int height) {
+Map::Map(const int width, const int height) : m_gridWidth(width), m_gridHeight(height)
+{
     m_grid = std::vector(height, std::vector<Block>(width));
 }
 
@@ -32,4 +33,12 @@ void Map::printMap() const{
         }
         std::cout << std::endl;
     }
+}
+
+int Map::getGridWidth() const {
+    return m_gridWidth;
+}
+
+int Map::getGridHeight() const {
+    return m_gridHeight;
 }

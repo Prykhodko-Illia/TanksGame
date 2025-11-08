@@ -22,6 +22,8 @@ public:
     Block(BlockType type, float posX, float posY, float width, float height);
 
     BlockType getType() const;
+    std::pair<float, float> getPosition() const;
+
     void takeDamage();
-    EntityRenderInfo getRenderInfo() const final;
+    EntityRenderInfo getRenderInfo() const;
 };

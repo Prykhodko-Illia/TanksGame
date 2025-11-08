@@ -7,6 +7,8 @@ private:
     using Grid = std::vector<std::vector<Block>>;
     Grid m_grid{};
 
+    int m_gridWidth;
+    int m_gridHeight;
 public:
     Map(int width, int height);
 
@@ -14,4 +16,6 @@ public:
     void removeBlockAt(std::pair<int, int> position);
 
     void printMap() const; /*temporary*/
+    int getGridWidth() const;
+    int getGridHeight() const;
 };

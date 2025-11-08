@@ -1,5 +1,4 @@
 ﻿#include "../../headers/managers/GameManager.h"
-#include <cmath>
 
 bool GameManager::init() {
     if (!m_renderer.initWindow()) {
@@ -42,6 +41,10 @@ void GameManager::run() {
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
             m_game.playerShoot();
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
+            m_game.spawnEnemy(m_renderer.getWindowSize());
         }
 
         m_renderer.clear();

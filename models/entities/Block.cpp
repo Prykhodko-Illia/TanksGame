@@ -27,6 +27,10 @@ BlockType Block::getType() const {
     return m_type;
 }
 
+std::pair<float, float> Block::getPosition() const{
+    return m_position;
+}
+
 void Block::takeDamage() {
     --m_durability;
 }

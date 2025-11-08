@@ -35,5 +35,5 @@ private:
     float m_rotation = 0;
     floatPair m_position{};
     static constexpr float TANK_WIDTH = 50.0f;
-    static constexpr float TANK_HEIGHT = 44.0f;
+    static constexpr float TANK_HEIGHT = 42.0f;
 };
