@@ -3,10 +3,12 @@
 void TanksGame::init(const std::pair<float, float> &windowSize) {
     {
         auto const playerTankF = PlayerTankFactory();
-        m_player = std::move(playerTankF.createTank(PLAYER_HEALTH, PLAYER_DAMAGE, {50, 50}, 0));
+        m_player = std::move(playerTankF.createTank(PLAYER_HEALTH, PLAYER_DAMAGE, {70, 50}, 0));
     }
 
-    m_map = generateMap(windowSize.first, windowSize.second, 0.025, 10);
+    const auto playerPosition = m_player->getPosition();
+
+    m_map = generateMap(windowSize.first, windowSize.second, 0.036, 12, playerPosition);
     m_map->printMap();
 }
 

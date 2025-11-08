@@ -2,7 +2,7 @@
 #include <iostream>
 
 Map::Map(const int width, const int height) {
-    m_grid = std::vector(width, std::vector<Block>(height));
+    m_grid = std::vector(height, std::vector<Block>(width));
 }
 
 Map::Grid & Map::getGrid() {

@@ -33,7 +33,6 @@ void Renderer::draw(const std::vector<EntityRenderInfo> &entities) {
         }
         sprite.setPosition(obj.posX, obj.posY);
         sprite.setRotation(obj.rotation);
-        sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 
         if (obj.textureId == "bushBlock") {
             sprite.setFillColor(sf::Color::Green);

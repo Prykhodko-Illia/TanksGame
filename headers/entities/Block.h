@@ -10,7 +10,7 @@ enum class BlockType {
     COUNT = 4
 };
 
-class Block : public IRenderable {
+class Block final : public IRenderable {
 private:
     BlockType m_type{};
 
