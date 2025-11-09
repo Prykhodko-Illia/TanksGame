@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <utility>
 #include <cmath>
+#include <functional>
 #include "../../../structs/EntityRenderInfo.h"
 #include "../../../headers/factories/ProjectileFactory.h"
 #include "../../entities/Irenderable.h"
@@ -9,10 +10,11 @@
 class ITank : public IRenderable {
 public:
     using floatPair = std::pair<float, float>;
+    using ProjectileCallBack = std::function<void(std::unique_ptr<Projectile>)>;
 
     ITank(int health, int damage, floatPair position, float rotation);
     virtual ~ITank() = default;
-    virtual void update(const std::unique_ptr<ITank> &player, float deltaTime) = 0;
+    virtual void update(const std::unique_ptr<ITank> &player, float deltaTime, ProjectileCallBack onShoot = nullptr) = 0;
     virtual bool takeDamage(int amount) = 0;
 
     std::unique_ptr<Projectile> shoot() const;
@@ -35,6 +37,7 @@ private:
 
     float m_rotation = 0;
     floatPair m_position{};
-    static constexpr float TANK_WIDTH = 50.0f;
-    static constexpr float TANK_HEIGHT = 42.0f;
+
+    static constexpr float TANK_WIDTH = 46.0f;
+    static constexpr float TANK_HEIGHT = 36.0f;
 };

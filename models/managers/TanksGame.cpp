@@ -67,8 +67,12 @@ void TanksGame::update(const float deltaTime) {
         p->update(deltaTime);
     }
 
+    auto spawnProjectile = [this](std::unique_ptr<Projectile> projectile) {
+        m_projectiles.push_back(std::move(projectile));
+    };
+
     for (const auto &enemy : m_enemyTanks) {
-        enemy->update(m_player, deltaTime);
+        enemy->update(m_player, deltaTime, spawnProjectile);
     }
 }
 

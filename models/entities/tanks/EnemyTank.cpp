@@ -2,6 +2,16 @@
 
 #include <random>
 
+float EnemyTank::getDistanceBetweenTanks(const floatPair &point1, const floatPair &point2) {
+    const auto [x1, y1] = point1;
+    const auto [x2, y2] = point2;
+
+    const float x = x2 - x1;
+    const float y = y2 - y1;
+
+    return std::sqrt(x * x + y * y);
+}
+
 EnemyTank::EnemyTank(const int health, const int damage, floatPair position, const float rotation)
     : ITank(health, damage, std::move(position), rotation)
 {
@@ -12,26 +22,27 @@ EnemyTank::EnemyTank(const int health, const int damage, floatPair position, con
     m_state = static_cast<EnemyState>(randomState(gen));
 }
 
-bool EnemyTank::isFacingPlayer(const std::unique_ptr<ITank> &playerTank, const float tolerance) {
-    const auto [enemyX, enemyY] = this->getPosition();
-    const auto [playerX, playerY] = playerTank->getPosition();
+bool EnemyTank::isFacingPlayer(const std::unique_ptr<ITank> &playerTank, const float flaw) {
+    const auto [x1, y1] = playerTank->getPosition();
+    const auto [x2, y2] = this->getPosition();
 
-    const float x = playerX - enemyX;
-    const float y = playerY - enemyY;
-
-    float radians = this->getRotation() * M_PI / 180.0f;
-    float facingX = std::cos(radians);
-    float facingY = std::sin(radians);
+    const float x = x1 - x2;
+    const float y = y1 - y2;
 
     float distance = std::sqrt(x * x + y * y);
     if (distance < 0.001f) return true;
+
+    float radians = this->getRotation() * M_PI / 180.0f;
+
+    float facingX = std::cos(radians);
+    float facingY = std::sin(radians);
 
     float directionX = x / distance;
     float directionY = y / distance;
 
     float dotProduct = facingX * directionX + facingY * directionY;
 
-    float aimPrecision = std::cos(tolerance * M_PI / 180.0f);
+    float aimPrecision = std::cos(flaw * M_PI / 180.0f);
 
     return dotProduct >= aimPrecision;
 }
@@ -58,11 +69,18 @@ void EnemyTank::rotateToPlayer(const std::unique_ptr<ITank>& playerTank, const f
     }
 }
 
-void EnemyTank::update(const std::unique_ptr<ITank> &player, const float deltaTime) {
+void EnemyTank::update(const std::unique_ptr<ITank> &player, const float deltaTime, ProjectileCallBack onShoot) {
+    m_shootTime += deltaTime;
+
+    if (getDistanceBetweenTanks(player->getPosition(), this->getPosition()) > SHOOTING_RADIUS) {
+        return;
+    }
+
     this->rotateToPlayer(player, ROTATION_SPEED * deltaTime);
 
-    if (isFacingPlayer(player, 6.0f)) {
-        auto projectile = this->shoot();
+    if (isFacingPlayer(player, 6.0f) && m_shootTime >= SHOOT_TIMER) {
+        onShoot(this->shoot());
+        m_shootTime = 0;
     }
 }
 
