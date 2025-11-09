@@ -4,7 +4,7 @@
 enum class EnemyState {
     Predefined,
     Aggressive,
-    Simple,
+    Defensive,
     COUNT
 };
 
@@ -15,14 +15,15 @@ private:
 
     const float ROTATION_SPEED = 100.0f;
     const float SHOOT_TIMER = 3.5f;
-    const float SHOOTING_RADIUS = 320.0f;
-    const float MOVE_SPEED = 45.0f;
+    const float SHOOTING_RADIUS = 260.0f;
+    const float MOVE_SPEED = 35.0f;
     void rotateToPlayer(const std::unique_ptr<ITank> &playerTank, float rotationValue);
     bool isFacingPlayer(const std::unique_ptr<ITank> &playerTank, float rotationValue);
 
     float getDistanceBetweenTanks(const floatPair &point1, const floatPair &point2);
 
-    void aggressiveMovement(const std::unique_ptr<ITank> &player, const float deltaTime, ProjectileCallBack onShoot);
+    void aggressiveMovement(const std::unique_ptr<ITank> &player, float deltaTime, ProjectileCallBack onShoot);
+    void defensiveMovement(const std::unique_ptr<ITank> &player, float deltaTime, ProjectileCallBack onShoot);
 public:
     EnemyTank(int health, int damage, floatPair position, float rotation);
     void update(const std::unique_ptr<ITank> &player, float deltaTime, ProjectileCallBack onShoot) override;

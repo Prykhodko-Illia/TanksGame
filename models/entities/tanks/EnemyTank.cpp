@@ -14,7 +14,6 @@ float EnemyTank::getDistanceBetweenTanks(const floatPair &point1, const floatPai
 
 void EnemyTank::aggressiveMovement(const std::unique_ptr<ITank> &player, const float deltaTime, ProjectileCallBack onShoot) {
     const auto playerPosition = player->getPosition();
-
     m_shootTime += deltaTime;
 
     this->rotateToPlayer(player, ROTATION_SPEED * deltaTime);
@@ -39,6 +38,18 @@ void EnemyTank::aggressiveMovement(const std::unique_ptr<ITank> &player, const f
             onShoot(this->shoot());
             m_shootTime = 0;
         }
+    }
+}
+
+void EnemyTank::defensiveMovement(const std::unique_ptr<ITank> &player, const float deltaTime, ProjectileCallBack onShoot) {
+    const auto playerPosition = player->getPosition();
+    m_shootTime += deltaTime;
+
+    this->rotateToPlayer(player, ROTATION_SPEED * deltaTime);
+
+    if (getDistanceBetweenTanks(playerPosition, this->getPosition()) <= SHOOTING_RADIUS && m_shootTime >= SHOOT_TIMER) {
+        onShoot(this->shoot());
+        m_shootTime = 0;
     }
 }
 
@@ -102,19 +113,19 @@ void EnemyTank::rotateToPlayer(const std::unique_ptr<ITank>& playerTank, const f
 }
 
 void EnemyTank::update(const std::unique_ptr<ITank> &player, const float deltaTime, ProjectileCallBack onShoot) {
-    // switch (m_state) {
-    //     case EnemyState::Aggressive:
-    //             aggressiveMovement(playerPosition);
-    //         break;
-    //     case EnemyState::Simple:
-    //
-    //         break;
-    //     case EnemyState::Predefined:
-    //
-    //         break;
-    //     default:
-    //         break;
-    // }
+    switch (m_state) {
+        case EnemyState::Aggressive:
+            aggressiveMovement(player, deltaTime, onShoot);
+            break;
+        case EnemyState::Defensive:
+            defensiveMovement(player, deltaTime, onShoot);
+            break;
+        case EnemyState::Predefined:
+
+            break;
+        default:
+            break;
+    }
 
     if (m_state == EnemyState::Aggressive) {
         aggressiveMovement(player, deltaTime, onShoot);
