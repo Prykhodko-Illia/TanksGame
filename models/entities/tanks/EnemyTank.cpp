@@ -12,6 +12,11 @@ float EnemyTank::getDistanceBetweenTanks(const floatPair &point1, const floatPai
     return std::sqrt(x * x + y * y);
 }
 
+// void EnemyTank::setMovePoints(const std::vector<floatPair> &movePoints) {
+//     m_movePoints = movePoints;
+//     m_IdxMovePoint = 0;
+// }
+
 void EnemyTank::aggressiveMovement(const std::unique_ptr<ITank> &player, const float deltaTime, ProjectileCallBack onShoot) {
     const auto playerPosition = player->getPosition();
     m_shootTime += deltaTime;
@@ -52,6 +57,31 @@ void EnemyTank::defensiveMovement(const std::unique_ptr<ITank> &player, const fl
         m_shootTime = 0;
     }
 }
+
+// void EnemyTank::predefinedMovement(const float deltaTime) {
+//     if (m_movePoints.empty()) {
+//         return;
+//     }
+//
+//     floatPair nextMovePoint = m_movePoints[m_IdxMovePoint];
+//     const auto [x1, y1] = this->getPosition();
+//     const auto [x2, y2] = nextMovePoint;
+//
+//     const float x = x1 - x2;
+//     const float y = y1 - y2;
+//
+//     float distance = std::sqrt(x * x + y * y);
+//
+//     if (distance < MOVE_POINT_RADIUS) {
+//         m_IdxMovePoint = (m_IdxMovePoint + 1) % m_movePoints.size();
+//         return;
+//     }
+//
+//     float directionX = x / distance;
+//     float directionY = y / distance;
+//
+//     this->move({directionX * MOVE_SPEED * deltaTime, directionY * MOVE_SPEED * deltaTime});
+// }
 
 EnemyTank::EnemyTank(const int health, const int damage, floatPair position, const float rotation)
     : ITank(health, damage, std::move(position), rotation)
@@ -119,9 +149,6 @@ void EnemyTank::update(const std::unique_ptr<ITank> &player, const float deltaTi
             break;
         case EnemyState::Defensive:
             defensiveMovement(player, deltaTime, onShoot);
-            break;
-        case EnemyState::Predefined:
-
             break;
         default:
             break;

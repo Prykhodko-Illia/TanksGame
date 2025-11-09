@@ -121,7 +121,7 @@ void TanksGame::spawnEnemy() {
     if (m_enemyTimerSpawn >= ENEMY_SPAWN_TIME) {
         m_enemyTimerSpawn = 0.0f;
         auto const enemyTankF = EnemyTankFactory();
-        m_enemyTanks.push_back(std::move(enemyTankF.createTank(PLAYER_HEALTH, PLAYER_DAMAGE, positions.at(randomPos(gen)), -180)));
+        m_enemyTanks.push_back(std::move(enemyTankF.createTank(PLAYER_HEALTH, PLAYER_DAMAGE, positions.at(randomPos(gen)), 0)));
     }
 
 }
