@@ -66,6 +66,10 @@ void TanksGame::update(const float deltaTime) {
     for (const auto &p : m_projectiles) {
         p->update(deltaTime);
     }
+
+    for (const auto &enemy : m_enemyTanks) {
+        enemy->update(m_player, deltaTime);
+    }
 }
 
 PlayerTank* TanksGame::getPlayerTank() {
@@ -97,7 +101,7 @@ void TanksGame::playerRotate(const float deltaTime, const bool clockWise) {
     clockWise ? m_player->rotate(deltaTime * TANK_ROTATE_SPEED) : m_player->rotate(-deltaTime * TANK_ROTATE_SPEED);
 }
 
-void TanksGame::spawnEnemy(const floatPair &windowSize) {
+void TanksGame::spawnEnemy() {
     std::random_device rd;
     std::mt19937 gen(rd());
 

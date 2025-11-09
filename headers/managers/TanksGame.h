@@ -36,7 +36,7 @@ public:
     void playerMove(const std::string &direction, float deltaTime);
     void playerRotate(float deltaTime, bool clockWise);
 
-    void spawnEnemy(const floatPair &windowSize);
+    void spawnEnemy();
     std::vector<EntityRenderInfo> getEntitiesRenderInfo();
 };
 

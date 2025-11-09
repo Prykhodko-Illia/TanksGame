@@ -12,6 +12,7 @@ public:
 
     ITank(int health, int damage, floatPair position, float rotation);
     virtual ~ITank() = default;
+    virtual void update(const std::unique_ptr<ITank> &player, float deltaTime) = 0;
     virtual bool takeDamage(int amount) = 0;
 
     std::unique_ptr<Projectile> shoot() const;

@@ -44,7 +44,7 @@ void GameManager::run() {
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
-            m_game.spawnEnemy(m_renderer.getWindowSize());
+            m_game.spawnEnemy();
         }
 
         m_renderer.clear();
