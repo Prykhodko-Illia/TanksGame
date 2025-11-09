@@ -12,6 +12,36 @@ float EnemyTank::getDistanceBetweenTanks(const floatPair &point1, const floatPai
     return std::sqrt(x * x + y * y);
 }
 
+void EnemyTank::aggressiveMovement(const std::unique_ptr<ITank> &player, const float deltaTime, ProjectileCallBack onShoot) {
+    const auto playerPosition = player->getPosition();
+
+    m_shootTime += deltaTime;
+
+    this->rotateToPlayer(player, ROTATION_SPEED * deltaTime);
+
+    if (isFacingPlayer(player, 6.0f)) {
+        const auto [playerX, playerY] = playerPosition;
+        const auto [enemyX, enemyY] = this->getPosition();
+
+        float x = playerX - enemyX;
+        float y = playerY - enemyY;
+
+        float distance = std::sqrt(x * x + y * y);
+
+        if (distance > 0.001f) {
+            float directionX = x / distance;
+            float directionY = y / distance;
+
+            this->move({directionX * MOVE_SPEED * deltaTime, directionY * MOVE_SPEED * deltaTime});
+        }
+
+        if (m_shootTime >= SHOOT_TIMER) {
+            onShoot(this->shoot());
+            m_shootTime = 0;
+        }
+    }
+}
+
 EnemyTank::EnemyTank(const int health, const int damage, floatPair position, const float rotation)
     : ITank(health, damage, std::move(position), rotation)
 {
@@ -30,7 +60,9 @@ bool EnemyTank::isFacingPlayer(const std::unique_ptr<ITank> &playerTank, const f
     const float y = y1 - y2;
 
     float distance = std::sqrt(x * x + y * y);
-    if (distance < 0.001f) return true;
+    if (distance < 0.001f) {
+        return true;
+    }
 
     float radians = this->getRotation() * M_PI / 180.0f;
 
@@ -70,17 +102,22 @@ void EnemyTank::rotateToPlayer(const std::unique_ptr<ITank>& playerTank, const f
 }
 
 void EnemyTank::update(const std::unique_ptr<ITank> &player, const float deltaTime, ProjectileCallBack onShoot) {
-    m_shootTime += deltaTime;
+    // switch (m_state) {
+    //     case EnemyState::Aggressive:
+    //             aggressiveMovement(playerPosition);
+    //         break;
+    //     case EnemyState::Simple:
+    //
+    //         break;
+    //     case EnemyState::Predefined:
+    //
+    //         break;
+    //     default:
+    //         break;
+    // }
 
-    if (getDistanceBetweenTanks(player->getPosition(), this->getPosition()) > SHOOTING_RADIUS) {
-        return;
-    }
-
-    this->rotateToPlayer(player, ROTATION_SPEED * deltaTime);
-
-    if (isFacingPlayer(player, 6.0f) && m_shootTime >= SHOOT_TIMER) {
-        onShoot(this->shoot());
-        m_shootTime = 0;
+    if (m_state == EnemyState::Aggressive) {
+        aggressiveMovement(player, deltaTime, onShoot);
     }
 }
 
