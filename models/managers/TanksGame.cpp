@@ -50,7 +50,7 @@ void TanksGame::validateEnemySpawnByTanks(std::vector<floatPair> &positions) {
 void TanksGame::init(const floatPair &windowSize) {
     {
         auto const playerTankF = PlayerTankFactory();
-        m_player = std::move(playerTankF.createTank(PLAYER_HEALTH, PLAYER_DAMAGE, {70, 50}, 0));
+        m_player = std::move(playerTankF.createTank(PLAYER_HEALTH, PLAYER_DAMAGE, {70, 150}, 0));
     }
 
     const auto playerPosition = m_player->getPosition();
@@ -131,8 +131,9 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
 
     m_enemyTanks.erase(
     std::remove_if(m_enemyTanks.begin(), m_enemyTanks.end(),
-        [](const auto &tank) {
+        [this](const auto &tank) {
             if (!tank->isAlive()) {
+                ++m_tanksKilled;
                 return true;
             }
             return false;
@@ -222,4 +223,8 @@ std::vector<EntityRenderInfo> TanksGame::getEntitiesRenderInfo() {
 
 int TanksGame::getPlayerHealth() const {
     return m_player->getHealth();
+}
+
+int TanksGame::getScore() const {
+    return m_tanksKilled;
 }

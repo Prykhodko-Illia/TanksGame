@@ -28,6 +28,7 @@ private:
     std::vector<Block *> m_blocks{};
     float m_projectileTimerSpawn = 3.0f;
     float m_enemyTimerSpawn = 6.0f;
+    int m_tanksKilled = 0;
 
     std::vector<floatPair> getValidPositions();
     void validateEnemySpawnByTank(const std::unique_ptr<ITank> &tank, std::vector<floatPair> &positions, float radius);
@@ -43,5 +44,6 @@ public:
     void spawnEnemy();
     std::vector<EntityRenderInfo> getEntitiesRenderInfo();
     int getPlayerHealth() const;
+    int getScore() const;
 };
 

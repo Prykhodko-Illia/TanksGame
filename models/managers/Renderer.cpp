@@ -33,7 +33,8 @@ sf::Text initText(FontManager &fontAssets, const std::string &font, const int si
 }
 
 void Renderer::initTexts() {
-    m_healthText = initText(m_fonts, "main", 22, sf::Color::Red, 5.0f, 5.0f);
+    m_healthText = initText(m_fonts, "main", 22, sf::Color::Black, 5.0f, 5.0f);
+    m_scoreText = initText(m_fonts, "main", 22, sf::Color::Black, 5.0f, 30.0f);
 }
 
 bool Renderer::initWindow() {
@@ -65,7 +66,7 @@ void Renderer::clear() {
     m_window.clear();
 }
 
-void Renderer::draw(const std::vector<EntityRenderInfo> &entities, const int playerHealth) {
+void Renderer::draw(const std::vector<EntityRenderInfo> &entities, const int playerHealth, const int score) {
     m_background.setTexture(m_textures.get("background"));
 
     sf::Vector2u textureSize = m_textures.get("background").getSize();
@@ -121,7 +122,9 @@ void Renderer::draw(const std::vector<EntityRenderInfo> &entities, const int pla
     }
 
     m_healthText.setString("Health: " + std::to_string(playerHealth));
+    m_scoreText.setString("Score: " + std::to_string(score));
     m_window.draw(m_healthText);
+    m_window.draw(m_scoreText);
 }
 
 void Renderer::display() {

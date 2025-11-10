@@ -12,7 +12,7 @@ private:
     TextureManager m_textures{};
     FontManager m_fonts{};
     sf::Sprite m_background{};
-    sf::Text m_healthText{};
+    sf::Text m_healthText{}, m_scoreText{};
 
     bool loadAllAssets();
     void initTexts();
@@ -24,7 +24,7 @@ public:
 
     void close();
     void clear();
-    void draw(const std::vector<EntityRenderInfo> &entities, int playerHealth);
+    void draw(const std::vector<EntityRenderInfo> &entities, int playerHealth, int score);
     void display();
 
     std::pair<float, float> getWindowSize() const;
