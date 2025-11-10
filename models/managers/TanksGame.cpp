@@ -67,6 +67,10 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
         p->update(deltaTime);
     }
 
+    if (m_enemyTimerSpawn >= ENEMY_SPAWN_TIME) {
+        this->spawnEnemy();
+    }
+
     m_projectiles.erase(
     std::remove_if(m_projectiles.begin(), m_projectiles.end(),
         [this, windowSize](const std::unique_ptr<Projectile>& projectile) {
@@ -122,7 +126,7 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
     };
 
     auto canMoveTo = [this, windowSize](const EntityCollisionInfo& nextPos) {
-        return m_collisionManager.canTankMoveTo(nextPos, m_blocks, windowSize);
+        return m_collisionManager.canTankMoveTo(nextPos, m_blocks, m_enemyTanks, m_player, false, windowSize);
     };
 
     for (const auto &enemy : m_enemyTanks) {
@@ -142,7 +146,7 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
     );
 
     if (!m_player->isAlive()) {
-        /*end the game*/
+        exit(0);
     }
 }
 
@@ -171,7 +175,7 @@ void TanksGame::playerMove(const std::string &direction, const float deltaTime, 
     nextPosition.posX += moveVector.first;
     nextPosition.posY += moveVector.second;
 
-    if (m_collisionManager.canTankMoveTo(nextPosition, m_blocks, windowSize)) {
+    if (m_collisionManager.canTankMoveTo(nextPosition, m_blocks, m_enemyTanks, m_player, true, windowSize)) {
         m_player->move(moveVector);
     }
 }

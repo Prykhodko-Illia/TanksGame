@@ -15,7 +15,7 @@ private:
     static constexpr int ENEMY_HEALTH = 20;
     static constexpr int ENEMY_DAMAGE = 5;
     static constexpr float PROJECTILE_SPAWN_TIME = 1.0f;
-    static constexpr float ENEMY_SPAWN_TIME = 0.3f;
+    static constexpr float ENEMY_SPAWN_TIME = 4.0f;
     static constexpr int TANK_SPEED = 200;
     static constexpr int TANK_ROTATE_SPEED = 140;
 
