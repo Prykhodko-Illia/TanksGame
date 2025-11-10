@@ -2,8 +2,8 @@
 
 #include <cmath>
 
-Projectile::Projectile(const floatPair &position, const int damage, const float rotation)
-    : m_position(position), m_damage(damage), m_rotation(rotation)
+Projectile::Projectile(const floatPair &position, const int damage, const float rotation, const ProjectileType type)
+    : m_position(position), m_damage(damage), m_rotation(rotation), m_type(type)
 { }
 
 void Projectile::update(const float deltaTime) {
@@ -28,6 +28,10 @@ void Projectile::setIsAlive(const bool state) {
 
 int Projectile::getDamage() const {
     return m_damage;
+}
+
+ProjectileType Projectile::getType() const {
+    return m_type;
 }
 
 EntityRenderInfo Projectile::getRenderInfo() const {

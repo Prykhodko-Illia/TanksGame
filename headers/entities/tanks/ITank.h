@@ -20,7 +20,7 @@ public:
         ProjectileCallBack onShoot = nullptr, MovementValidator canMoveTo = nullptr) = 0;
     virtual void takeDamage(int amount) = 0;
 
-    std::unique_ptr<Projectile> shoot() const;
+    std::unique_ptr<Projectile> shoot(ProjectileType type) const;
     void move(floatPair const &moveVector);
     void rotate(float value);
 

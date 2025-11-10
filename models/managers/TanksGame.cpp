@@ -83,16 +83,20 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
                 }
             }
 
-            for (auto &tank : m_enemyTanks) {
-                if (m_collisionManager.collides(projectileInfo, tank->getCollisionInfo())) {
-                    tank->takeDamage(projectile->getDamage());
-                    return true;
+            if (projectile->getType() == ProjectileType::Player) {
+                for (auto &tank : m_enemyTanks) {
+                    if (m_collisionManager.collides(projectileInfo, tank->getCollisionInfo())) {
+                        tank->takeDamage(projectile->getDamage());
+                        return true;
+                    }
                 }
             }
 
-            if (m_collisionManager.collides(projectileInfo, m_player->getCollisionInfo())) {
-                m_player->takeDamage(projectile->getDamage());
-                return true;
+            if (projectile->getType() == ProjectileType::Enemy) {
+                if (m_collisionManager.collides(projectileInfo, m_player->getCollisionInfo())) {
+                    m_player->takeDamage(projectile->getDamage());
+                    return true;
+                }
             }
 
             return false;
@@ -140,7 +144,7 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
 void TanksGame::playerShoot() {
     if (m_projectileTimerSpawn >= PROJECTILE_SPAWN_TIME) {
         m_projectileTimerSpawn = 0.0f;
-        auto newProjectile = m_player->shoot();
+        auto newProjectile = m_player->shoot(ProjectileType::Player);
         m_projectiles.push_back(std::move(newProjectile));
     }
 }
@@ -187,7 +191,7 @@ void TanksGame::spawnEnemy() {
     if (m_enemyTimerSpawn >= ENEMY_SPAWN_TIME) {
         m_enemyTimerSpawn = 0.0f;
         auto const enemyTankF = EnemyTankFactory();
-        m_enemyTanks.push_back(std::move(enemyTankF.createTank(PLAYER_HEALTH, PLAYER_DAMAGE, positions.at(randomPos(gen)), 0)));
+        m_enemyTanks.push_back(std::move(enemyTankF.createTank(ENEMY_HEALTH, ENEMY_DAMAGE, positions.at(randomPos(gen)), 0)));
     }
 
 }

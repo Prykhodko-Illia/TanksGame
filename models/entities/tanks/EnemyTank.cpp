@@ -47,7 +47,7 @@ void EnemyTank::aggressiveMovement(const std::unique_ptr<ITank> &player, const f
         }
 
         if (m_shootTime >= SHOOT_TIMER) {
-            onShoot(this->shoot());
+            onShoot(this->shoot(ProjectileType::Enemy));
             m_shootTime = 0;
         }
     }
@@ -61,7 +61,7 @@ void EnemyTank::defensiveMovement(const std::unique_ptr<ITank> &player, const fl
     this->rotateToPlayer(player, ROTATION_SPEED * deltaTime);
 
     if (getDistanceBetweenTanks(playerPosition, this->getPosition()) <= SHOOTING_RADIUS && m_shootTime >= SHOOT_TIMER) {
-        onShoot(this->shoot());
+        onShoot(this->shoot(ProjectileType::Enemy));
         m_shootTime = 0;
     }
 }

@@ -4,7 +4,7 @@ ITank::ITank(const int health, const int damage, floatPair position, const float
     : m_health(health), m_damage(damage), m_position(std::move(position)), m_rotation(rotation)
 {}
 
-std::unique_ptr<Projectile> ITank::shoot() const {
+std::unique_ptr<Projectile> ITank::shoot(ProjectileType type) const {
     floatPair pos = this->getPosition();
     float rotation = this->getRotation();
 
@@ -23,7 +23,7 @@ std::unique_ptr<Projectile> ITank::shoot() const {
 
     floatPair spawnPos = {spawnX, spawnY};
 
-    return createProjectile(spawnPos, this->getDamage(), rotation);
+    return createProjectile(spawnPos, this->getDamage(), rotation, type);
 }
 
 void ITank::move(floatPair const &moveVector) {
