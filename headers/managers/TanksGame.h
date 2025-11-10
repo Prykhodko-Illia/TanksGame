@@ -42,5 +42,6 @@ public:
 
     void spawnEnemy();
     std::vector<EntityRenderInfo> getEntitiesRenderInfo();
+    int getPlayerHealth() const;
 };
 

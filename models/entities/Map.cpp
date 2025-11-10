@@ -21,11 +21,11 @@ void Map::printMap() const{
                     std::cout << "*";
                     break;
 
-                case BlockType::Wood:
+                case BlockType::Tree:
                     std::cout << "@";
                     break;
 
-                case BlockType::Brick:
+                case BlockType::Rock:
                     std::cout << "=";
                     break;
 

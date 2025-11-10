@@ -48,7 +48,7 @@ void GameManager::run() {
         }
 
         m_renderer.clear();
-        m_renderer.draw(m_game.getEntitiesRenderInfo());
+        m_renderer.draw(m_game.getEntitiesRenderInfo(), m_game.getPlayerHealth());
         m_renderer.display();
     }
 }

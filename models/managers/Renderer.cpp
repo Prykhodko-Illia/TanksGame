@@ -1,7 +1,50 @@
 ﻿#include "../../headers/managers/Renderer.h"
 
+bool Renderer::loadAllAssets() {
+    if (!loadAssets(m_fonts, {
+    {"main", "../assets/fonts/Vipnagorgialla-Bd.otf"}
+    })) {
+        return false;
+    }
+
+    if (!loadAssets(m_textures, {
+        {"playerTank", "../assets/images/tank1.png"},
+        {"enemyTank", "../assets/images/tank3.png"},
+        {"Bush", "../assets/images/Bush.png"},
+        {"Tree", "../assets/images/Tree.png"},
+        {"Rock", "../assets/images/Rock.png"},
+        {"background", "../assets/images/background.jpg"},
+        {"projectile", "../assets/images/projectile.png"},
+    })) {
+        return false;
+    }
+
+    return true;
+}
+
+sf::Text initText(FontManager &fontAssets, const std::string &font, const int size, const sf::Color &color, const float posX, const float posY) {
+    sf::Text newText;
+    newText.setFont(fontAssets.get(font));
+    newText.setCharacterSize(size);
+    newText.setFillColor(color);
+    newText.setPosition(posX, posY);
+
+    return newText;
+}
+
+void Renderer::initTexts() {
+    m_healthText = initText(m_fonts, "main", 22, sf::Color::Red, 5.0f, 5.0f);
+}
+
 bool Renderer::initWindow() {
     m_window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "TanksGame");
+
+    if (!loadAllAssets()) {
+        std::cout << "Problem with assets loading" << std::endl;
+        return false;
+    }
+
+    initTexts();
 
     return true;
 }
@@ -22,49 +65,63 @@ void Renderer::clear() {
     m_window.clear();
 }
 
-void Renderer::draw(const std::vector<EntityRenderInfo> &entities) {
+void Renderer::draw(const std::vector<EntityRenderInfo> &entities, const int playerHealth) {
+    m_background.setTexture(m_textures.get("background"));
+
+    sf::Vector2u textureSize = m_textures.get("background").getSize();
+    sf::Vector2u windowSize = m_window.getSize();
+
+    float scaleX = static_cast<float>(windowSize.x) / textureSize.x;
+    float scaleY = static_cast<float>(windowSize.y) / textureSize.y;
+
+    m_background.setScale(scaleX, scaleY);
+
+    m_window.draw(m_background);
+
     for (auto &obj : entities) {
+        sf::Sprite sprite;
         float width = obj.width;
         float height = obj.height;
 
-        sf::RectangleShape sprite(sf::Vector2f(width, height));
-        if (obj.isCentered) {
-            sprite.setOrigin(width / 2, height / 2);
+        if (m_textures.has(obj.textureId)) {
+            sprite.setTexture(m_textures.get(obj.textureId));
+
+            sf::Vector2u textureSize1 = m_textures.get(obj.textureId).getSize();
+            float scaleX1 = width / textureSize1.x;
+            float scaleY1 = height / textureSize1.y;
+            sprite.setScale(scaleX1, scaleY1);
         }
+
+        if (obj.isCentered) {
+            sf::FloatRect bounds = sprite.getLocalBounds();
+            sprite.setOrigin(bounds.width / 2, bounds.height / 2);
+        }
+
         sprite.setPosition(obj.posX, obj.posY);
         sprite.setRotation(obj.rotation);
 
-        if (obj.textureId == "bushBlock") {
-            sprite.setFillColor(sf::Color::Green);
-        } else if (obj.textureId == "woodBlock") {
-            sprite.setFillColor(sf::Color{150, 75, 0});
-        } else if (obj.textureId == "brickBlock") {
-            sprite.setFillColor(sf::Color{100, 0, 35});
-        } else if (obj.textureId == "playerTank") {
-            sprite.setFillColor(sf::Color::Magenta);
-        } else if (obj.textureId == "projectile") {
-            sprite.setFillColor(sf::Color::Red);
-        }
-
         m_window.draw(sprite);
 
-        if (true) {
-            sf::RectangleShape hitbox(sf::Vector2f(width, height));
-
-            // Use the same origin as the sprite
-            if (obj.isCentered) {
-                hitbox.setOrigin(width / 2, height / 2);
-            }
-
-            hitbox.setPosition(obj.posX, obj.posY);
-            hitbox.setRotation(obj.rotation);
-            hitbox.setFillColor(sf::Color::Transparent);
-            hitbox.setOutlineColor(sf::Color::Cyan);
-            hitbox.setOutlineThickness(1.0f);
-
-            m_window.draw(hitbox);
-        }
+        // if (true) {
+        //     sf::RectangleShape hitbox(sf::Vector2f(width, height));
+        //
+        //     // Use the same origin as the sprite
+        //     if (obj.isCentered) {
+        //         hitbox.setOrigin(width / 2, height / 2);
+        //     }
+        //
+        //     hitbox.setPosition(obj.posX, obj.posY);
+        //     hitbox.setRotation(obj.rotation);
+        //     hitbox.setFillColor(sf::Color::Transparent);
+        //     hitbox.setOutlineColor(sf::Color::Cyan);
+        //     hitbox.setOutlineThickness(1.0f);
+        //
+        //     m_window.draw(hitbox);
+        // }
     }
+
+    m_healthText.setString("Health: " + std::to_string(playerHealth));
+    m_window.draw(m_healthText);
 }
 
 void Renderer::display() {

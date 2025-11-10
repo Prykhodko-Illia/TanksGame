@@ -46,4 +46,7 @@ private:
 
     static constexpr float TANK_WIDTH = 46.0f;
     static constexpr float TANK_HEIGHT = 36.0f;
+
+protected:
+    std::string m_textureId{};
 };

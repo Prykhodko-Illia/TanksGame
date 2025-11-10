@@ -139,6 +139,10 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
         }),
     m_enemyTanks.end()
     );
+
+    if (!m_player->isAlive()) {
+        /*end the game*/
+    }
 }
 
 void TanksGame::playerShoot() {
@@ -214,4 +218,8 @@ std::vector<EntityRenderInfo> TanksGame::getEntitiesRenderInfo() {
     info.push_back(m_player->getRenderInfo());
 
     return info;
+}
+
+int TanksGame::getPlayerHealth() const {
+    return m_player->getHealth();
 }
