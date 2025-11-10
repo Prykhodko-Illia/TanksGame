@@ -120,16 +120,17 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
     m_blocks.end()
     );
 
-
-    auto spawnProjectile = [this](std::unique_ptr<Projectile> projectile) {
-        m_projectiles.push_back(std::move(projectile));
-    };
-
-    auto canMoveTo = [this, windowSize](const EntityCollisionInfo& nextPos) {
-        return m_collisionManager.canTankMoveTo(nextPos, m_blocks, m_enemyTanks, m_player, false, windowSize);
-    };
-
     for (const auto &enemy : m_enemyTanks) {
+        EntityCollisionInfo selfInfo = enemy->getCollisionInfo();
+
+        auto spawnProjectile = [this](std::unique_ptr<Projectile> projectile) {
+            m_projectiles.push_back(std::move(projectile));
+        };
+
+        auto canMoveTo = [this, windowSize, &selfInfo](const EntityCollisionInfo& nextPos) {
+            return m_collisionManager.canTankMoveTo(nextPos, m_blocks, m_enemyTanks, m_player, false, windowSize, &selfInfo);
+        };
+
         enemy->update(m_player, deltaTime, spawnProjectile, canMoveTo);
     }
 
