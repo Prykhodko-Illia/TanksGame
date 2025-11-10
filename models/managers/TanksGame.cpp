@@ -4,7 +4,7 @@
 std::vector<TanksGame::floatPair> TanksGame::getValidPositions() {
     std::vector<floatPair> positions{};
 
-    const auto grid = m_map->getGrid();
+    const auto &grid = m_map->getGrid();
     const int width = m_map->getGridWidth();
     const int height = m_map->getGridHeight();
 
@@ -15,14 +15,14 @@ std::vector<TanksGame::floatPair> TanksGame::getValidPositions() {
             bool isvalid = true;
             for (const auto &[x, y] : offsets) {
 
-                if (grid[i + y][j + x].getType() != BlockType::Empty) {
+                if (!grid[i + y][j + x] || grid[i + y][j + x]->getType() != BlockType::Empty) {
                     isvalid = false;
                     break;
                 }
             }
 
-            if (isvalid) {
-                positions.push_back(grid[i][j].getPosition());
+            if (isvalid && grid[i][j]) {
+                positions.push_back(grid[i][j]->getPosition());
             }
         }
     }
@@ -55,11 +55,11 @@ void TanksGame::init(const floatPair &windowSize) {
 
     const auto playerPosition = m_player->getPosition();
 
-    m_map = generateMap(windowSize.first, windowSize.second, 0.036, 12, playerPosition);
-    m_map->printMap();
+    m_map = generateMap(windowSize.first, windowSize.second,
+        0.036, 7, playerPosition, m_blocks);
 }
 
-void TanksGame::update(const float deltaTime) {
+void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
     m_projectileTimerSpawn += deltaTime;
     m_enemyTimerSpawn += deltaTime;
 
@@ -71,13 +71,13 @@ void TanksGame::update(const float deltaTime) {
         m_projectiles.push_back(std::move(projectile));
     };
 
-    for (const auto &enemy : m_enemyTanks) {
-        enemy->update(m_player, deltaTime, spawnProjectile);
-    }
-}
+    auto canMoveTo = [this, windowSize](const EntityCollisionInfo& nextPos) {
+        return m_collisionManager.canTankMoveTo(nextPos, m_blocks, windowSize);
+    };
 
-PlayerTank* TanksGame::getPlayerTank() {
-    return dynamic_cast<PlayerTank*>(m_player.get());
+    for (const auto &enemy : m_enemyTanks) {
+        enemy->update(m_player, deltaTime, spawnProjectile, canMoveTo);
+    }
 }
 
 void TanksGame::playerShoot() {
@@ -88,16 +88,25 @@ void TanksGame::playerShoot() {
     }
 }
 
-void TanksGame::playerMove(const std::string &direction, const float deltaTime) {
+void TanksGame::playerMove(const std::string &direction, const float deltaTime, const floatPair &windowSize) {
     float moveValue = TANK_SPEED * deltaTime;
-    float radians = m_player->getRotation() * 3.14159f / 180.f;
+    float radians = m_player->getRotation() * M_PI / 180.f;
     float dx = std::cos(radians);
     float dy = std::sin(radians);
 
+    floatPair moveVector{};
     if (direction == "up") {
-        m_player->move({dx * moveValue, dy * moveValue});
+        moveVector = {dx * moveValue, dy * moveValue};
     } else if (direction == "down") {
-        m_player->move({-(dx * moveValue) * 0.7, -(dy * moveValue) * 0.7});
+        moveVector = {-(dx * moveValue) * 0.7, -(dy * moveValue) * 0.7};
+    }
+
+    EntityCollisionInfo nextPosition = m_player->getCollisionInfo();
+    nextPosition.posX += moveVector.first;
+    nextPosition.posY += moveVector.second;
+
+    if (m_collisionManager.canTankMoveTo(nextPosition, m_blocks, windowSize)) {
+        m_player->move(moveVector);
     }
 }
 
@@ -129,15 +138,8 @@ void TanksGame::spawnEnemy() {
 std::vector<EntityRenderInfo> TanksGame::getEntitiesRenderInfo() {
     std::vector<EntityRenderInfo> info{};
 
-    const auto & grid = m_map->getGrid();
-
-    for (auto &row : grid) {
-        for (auto &cell : row) {
-            const auto &renderInfo = cell.getRenderInfo();
-            if (!renderInfo.textureId.empty()) {
-                info.push_back(renderInfo);
-            }
-        }
+    for (const auto &block : m_blocks) {
+        info.push_back(block->getRenderInfo());
     }
 
     for (const auto &p : m_projectiles) {

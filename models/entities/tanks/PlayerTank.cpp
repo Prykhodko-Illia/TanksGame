@@ -4,7 +4,7 @@ PlayerTank::PlayerTank(const int health, const int damage, floatPair position, c
     : ITank(health, damage, std::move(position), rotation)
 {}
 
-void PlayerTank::update(const std::unique_ptr<ITank> &player, const float deltaTime, ProjectileCallBack onShoot) {}
+void PlayerTank::update(const std::unique_ptr<ITank> &player, const float deltaTime, ProjectileCallBack onShoot, MovementValidator canMoveTo) {}
 
 bool PlayerTank::takeDamage(const int damage) {
     int newHealth = this->getHealth() - damage;

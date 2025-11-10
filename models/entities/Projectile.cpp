@@ -18,6 +18,18 @@ void Projectile::update(const float deltaTime) {
     m_position = {newX, newY};
 }
 
+bool Projectile::isAlive() const {
+    return m_isAlive;
+}
+
+void Projectile::setIsAlive(const bool state) {
+    m_isAlive = state;
+}
+
+int Projectile::getDamage() const {
+    return m_damage;
+}
+
 EntityRenderInfo Projectile::getRenderInfo() const {
     const auto [first, second] = m_position;
     EntityRenderInfo info {
@@ -29,6 +41,18 @@ EntityRenderInfo Projectile::getRenderInfo() const {
         0.2,
         "projectile",
         true
+    };
+
+    return info;
+}
+
+EntityCollisionInfo Projectile::getCollisionInfo() const {
+    const auto [first, second] = m_position;
+    EntityCollisionInfo info = {
+        first,
+        second,
+        PROJECTILE_SIZE,
+        PROJECTILE_SIZE
     };
 
     return info;

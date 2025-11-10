@@ -3,7 +3,10 @@
 
 Map::Map(const int width, const int height) : m_gridWidth(width), m_gridHeight(height)
 {
-    m_grid = std::vector(height, std::vector<Block>(width));
+    m_grid.resize(height);
+    for (auto& row : m_grid) {
+        row.resize(width);
+    }
 }
 
 Map::Grid & Map::getGrid() {
@@ -11,9 +14,9 @@ Map::Grid & Map::getGrid() {
 }
 
 void Map::printMap() const{
-    for (auto row : m_grid) {
-        for (auto cell : row) {
-            switch (cell.getType()) {
+    for (const auto &row : m_grid) {
+        for (const auto &cell : row) {
+            switch (cell->getType()) {
                 case BlockType::Bush:
                     std::cout << "*";
                     break;

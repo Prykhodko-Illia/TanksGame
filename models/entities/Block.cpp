@@ -31,6 +31,10 @@ std::pair<float, float> Block::getPosition() const{
     return m_position;
 }
 
+bool Block::isAlive() const {
+    return m_durability > 0;
+}
+
 void Block::takeDamage() {
     --m_durability;
 }
@@ -62,6 +66,18 @@ EntityRenderInfo Block::getRenderInfo() const {
         1,
         textureId,
         false
+    };
+
+    return info;
+}
+
+EntityCollisionInfo Block::getCollisionInfo() const {
+    const auto [first, second] = m_position;
+    EntityCollisionInfo info = {
+        first,
+        second,
+        m_width,
+        m_height
     };
 
     return info;

@@ -47,6 +47,23 @@ void Renderer::draw(const std::vector<EntityRenderInfo> &entities) {
         }
 
         m_window.draw(sprite);
+
+        if (true) {
+            sf::RectangleShape hitbox(sf::Vector2f(width, height));
+
+            // Use the same origin as the sprite
+            if (obj.isCentered) {
+                hitbox.setOrigin(width / 2, height / 2);
+            }
+
+            hitbox.setPosition(obj.posX, obj.posY);
+            hitbox.setRotation(obj.rotation);
+            hitbox.setFillColor(sf::Color::Transparent);
+            hitbox.setOutlineColor(sf::Color::Cyan);
+            hitbox.setOutlineThickness(1.0f);
+
+            m_window.draw(hitbox);
+        }
     }
 }
 

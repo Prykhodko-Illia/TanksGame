@@ -43,12 +43,16 @@ void ITank::setHealth(const int value) {
     m_health = value;
 }
 
+int ITank::getDamage() const {
+    return m_damage;
+}
+
 void ITank::setDamage(const int value) {
     m_damage += value;
 }
 
-int ITank::getDamage() const {
-    return m_damage;
+bool ITank::isAlive() const{
+    return m_health > 0;
 }
 
 ITank::floatPair ITank::getPosition() const {
@@ -70,6 +74,18 @@ EntityRenderInfo ITank::getRenderInfo() const {
         1,
         "playerTank",
         true
+    };
+
+    return info;
+}
+
+EntityCollisionInfo ITank::getCollisionInfo() const {
+    const auto [first, second] = this->getPosition();
+    EntityCollisionInfo info {
+        first - TANK_WIDTH / 2.0f,
+        second - TANK_HEIGHT / 2.0f,
+        TANK_WIDTH,
+        TANK_HEIGHT
     };
 
     return info;

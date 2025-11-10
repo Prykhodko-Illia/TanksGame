@@ -24,11 +24,13 @@ private:
     float getDistanceBetweenTanks(const floatPair &point1, const floatPair &point2);
     // void setMovePoints(const std::vector<floatPair> &movePoints);
 
-    void aggressiveMovement(const std::unique_ptr<ITank> &player, float deltaTime, ProjectileCallBack onShoot);
+    void aggressiveMovement(const std::unique_ptr<ITank> &player, float deltaTime,
+        ProjectileCallBack onShoot, MovementValidator canMoveTo);
     void defensiveMovement(const std::unique_ptr<ITank> &player, float deltaTime, ProjectileCallBack onShoot);
     // void predefinedMovement(float deltaTime);
 public:
     EnemyTank(int health, int damage, floatPair position, float rotation);
-    void update(const std::unique_ptr<ITank> &player, float deltaTime, ProjectileCallBack onShoot) override;
+    void update(const std::unique_ptr<ITank> &player, float deltaTime,
+        ProjectileCallBack onShoot, MovementValidator canMoveTo) override;
     bool takeDamage(int damage);
 };

@@ -21,7 +21,7 @@ void GameManager::run() {
             }
         }
 
-        m_game.update(deltaTime);
+        m_game.update(deltaTime, m_renderer.getWindowSize());
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
             m_game.playerRotate(deltaTime, false);
@@ -32,11 +32,11 @@ void GameManager::run() {
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-            m_game.playerMove("up", deltaTime);
+            m_game.playerMove("up", deltaTime, m_renderer.getWindowSize());
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            m_game.playerMove("down", deltaTime);
+            m_game.playerMove("down", deltaTime,  m_renderer.getWindowSize());
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {

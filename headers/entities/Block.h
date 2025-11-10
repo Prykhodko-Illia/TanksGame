@@ -1,16 +1,17 @@
 ﻿#pragma once
 #include <utility>
 #include "IRenderable.h"
+#include "ICollisive.h"
 
 enum class BlockType {
     Empty = -1,
     Bush = 0,
     Wood = 1,
     Brick = 2,
-    COUNT = 4
+    COUNT = 3
 };
 
-class Block final : public IRenderable {
+class Block final : public IRenderable, public ICollisive {
 private:
     BlockType m_type{};
 
@@ -24,6 +25,9 @@ public:
     BlockType getType() const;
     std::pair<float, float> getPosition() const;
 
+    bool isAlive() const;
+
     void takeDamage();
     EntityRenderInfo getRenderInfo() const;
+    EntityCollisionInfo getCollisionInfo() const;
 };

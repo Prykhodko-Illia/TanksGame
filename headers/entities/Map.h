@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include <memory>
 #include <vector>
 #include "Block.h"
 
 class Map {
 private:
-    using Grid = std::vector<std::vector<Block>>;
+    using Grid = std::vector<std::vector<std::unique_ptr<Block>>>;
     Grid m_grid{};
 
     int m_gridWidth;

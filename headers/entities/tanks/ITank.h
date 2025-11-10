@@ -5,16 +5,19 @@
 #include "../../../structs/EntityRenderInfo.h"
 #include "../../../headers/factories/ProjectileFactory.h"
 #include "../../entities/Irenderable.h"
+#include "../../entities/ICollisive.h"
 
 
-class ITank : public IRenderable {
+class ITank : public IRenderable, public ICollisive {
 public:
     using floatPair = std::pair<float, float>;
     using ProjectileCallBack = std::function<void(std::unique_ptr<Projectile>)>;
+    using MovementValidator = std::function<bool(const EntityCollisionInfo &)>;
 
     ITank(int health, int damage, floatPair position, float rotation);
     virtual ~ITank() = default;
-    virtual void update(const std::unique_ptr<ITank> &player, float deltaTime, ProjectileCallBack onShoot = nullptr) = 0;
+    virtual void update(const std::unique_ptr<ITank> &player, float deltaTime,
+        ProjectileCallBack onShoot = nullptr, MovementValidator canMoveTo = nullptr) = 0;
     virtual bool takeDamage(int amount) = 0;
 
     std::unique_ptr<Projectile> shoot() const;
@@ -27,9 +30,12 @@ public:
     int getDamage() const;
     void setDamage(int value);
 
+    bool isAlive() const;
+
     floatPair getPosition() const;
     float getRotation() const;
     EntityRenderInfo getRenderInfo() const final;
+    EntityCollisionInfo getCollisionInfo() const final;
 
 private:
     int m_health = 0;

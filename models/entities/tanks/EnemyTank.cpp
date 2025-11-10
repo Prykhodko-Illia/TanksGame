@@ -17,7 +17,8 @@ float EnemyTank::getDistanceBetweenTanks(const floatPair &point1, const floatPai
 //     m_IdxMovePoint = 0;
 // }
 
-void EnemyTank::aggressiveMovement(const std::unique_ptr<ITank> &player, const float deltaTime, ProjectileCallBack onShoot) {
+void EnemyTank::aggressiveMovement(const std::unique_ptr<ITank> &player, const float deltaTime,
+    ProjectileCallBack onShoot, MovementValidator canMoveTo) {
     const auto playerPosition = player->getPosition();
     m_shootTime += deltaTime;
 
@@ -36,7 +37,13 @@ void EnemyTank::aggressiveMovement(const std::unique_ptr<ITank> &player, const f
             float directionX = x / distance;
             float directionY = y / distance;
 
-            this->move({directionX * MOVE_SPEED * deltaTime, directionY * MOVE_SPEED * deltaTime});
+            EntityCollisionInfo nextPosition = getCollisionInfo();
+            nextPosition.posX += directionX * MOVE_SPEED * deltaTime;
+            nextPosition.posY += directionY * MOVE_SPEED * deltaTime;
+
+            if (canMoveTo(nextPosition)) {
+                this->move({directionX * MOVE_SPEED * deltaTime, directionY * MOVE_SPEED * deltaTime});
+            }
         }
 
         if (m_shootTime >= SHOOT_TIMER) {
@@ -46,7 +53,8 @@ void EnemyTank::aggressiveMovement(const std::unique_ptr<ITank> &player, const f
     }
 }
 
-void EnemyTank::defensiveMovement(const std::unique_ptr<ITank> &player, const float deltaTime, ProjectileCallBack onShoot) {
+void EnemyTank::defensiveMovement(const std::unique_ptr<ITank> &player, const float deltaTime,
+    ProjectileCallBack onShoot) {
     const auto playerPosition = player->getPosition();
     m_shootTime += deltaTime;
 
@@ -142,10 +150,11 @@ void EnemyTank::rotateToPlayer(const std::unique_ptr<ITank>& playerTank, const f
     }
 }
 
-void EnemyTank::update(const std::unique_ptr<ITank> &player, const float deltaTime, ProjectileCallBack onShoot) {
+void EnemyTank::update(const std::unique_ptr<ITank> &player, const float deltaTime,
+    ProjectileCallBack onShoot, MovementValidator canMoveTo) {
     switch (m_state) {
         case EnemyState::Aggressive:
-            aggressiveMovement(player, deltaTime, onShoot);
+            aggressiveMovement(player, deltaTime, onShoot, canMoveTo);
             break;
         case EnemyState::Defensive:
             defensiveMovement(player, deltaTime, onShoot);
@@ -155,7 +164,7 @@ void EnemyTank::update(const std::unique_ptr<ITank> &player, const float deltaTi
     }
 
     if (m_state == EnemyState::Aggressive) {
-        aggressiveMovement(player, deltaTime, onShoot);
+        aggressiveMovement(player, deltaTime, onShoot, canMoveTo);
     }
 }
 
