@@ -10,8 +10,10 @@
 class TanksGame {
     using floatPair = std::pair<float, float>;
 private:
-    static constexpr int PLAYER_HEALTH = 25;
+    static constexpr int PLAYER_HEALTH = 40;
     static constexpr int PLAYER_DAMAGE = 10;
+    static constexpr int ENEMY_HEALTH = 20;
+    static constexpr int ENEMY_DAMAGE = 5;
     static constexpr float PROJECTILE_SPAWN_TIME = 1.0f;
     static constexpr float ENEMY_SPAWN_TIME = 0.3f;
     static constexpr int TANK_SPEED = 200;

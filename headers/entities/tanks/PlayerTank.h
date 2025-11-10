@@ -8,5 +8,5 @@ public:
     PlayerTank(int health, int damage, floatPair position, float rotation);
 
     void update(const std::unique_ptr<ITank> &player, float deltaTime, ProjectileCallBack onShoot, MovementValidator canMoveTo) override;
-    bool takeDamage(int damage) final;
+    void takeDamage(int damage) final;
 };

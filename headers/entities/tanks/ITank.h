@@ -18,7 +18,7 @@ public:
     virtual ~ITank() = default;
     virtual void update(const std::unique_ptr<ITank> &player, float deltaTime,
         ProjectileCallBack onShoot = nullptr, MovementValidator canMoveTo = nullptr) = 0;
-    virtual bool takeDamage(int amount) = 0;
+    virtual void takeDamage(int amount) = 0;
 
     std::unique_ptr<Projectile> shoot() const;
     void move(floatPair const &moveVector);

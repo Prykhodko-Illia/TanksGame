@@ -6,18 +6,15 @@ PlayerTank::PlayerTank(const int health, const int damage, floatPair position, c
 
 void PlayerTank::update(const std::unique_ptr<ITank> &player, const float deltaTime, ProjectileCallBack onShoot, MovementValidator canMoveTo) {}
 
-bool PlayerTank::takeDamage(const int damage) {
+void PlayerTank::takeDamage(const int damage) {
     int newHealth = this->getHealth() - damage;
 
     if (newHealth <= 0) {
-        if (m_wasSaved) {
-            return false;
+        if (!m_wasSaved) {
+            m_wasSaved = true;
+            newHealth = 1;
         }
-
-        m_wasSaved = true;
-        newHealth = 1;
     }
 
     this->setHealth(newHealth);
-    return true;
 }

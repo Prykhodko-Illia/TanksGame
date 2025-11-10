@@ -74,12 +74,25 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
                 return true;
             }
 
-            EntityCollisionInfo projInfo = projectile->getCollisionInfo();
-                for (auto& block : m_blocks) {
-                    if (m_collisionManager.collides(projInfo, block->getCollisionInfo())) {
-                block->takeDamage();
-                return true;
+            EntityCollisionInfo projectileInfo = projectile->getCollisionInfo();
+
+            for (auto &block : m_blocks) {
+                if (m_collisionManager.collides(projectileInfo, block->getCollisionInfo())) {
+                    block->takeDamage();
+                    return true;
                 }
+            }
+
+            for (auto &tank : m_enemyTanks) {
+                if (m_collisionManager.collides(projectileInfo, tank->getCollisionInfo())) {
+                    tank->takeDamage(projectile->getDamage());
+                    return true;
+                }
+            }
+
+            if (m_collisionManager.collides(projectileInfo, m_player->getCollisionInfo())) {
+                m_player->takeDamage(projectile->getDamage());
+                return true;
             }
 
             return false;
@@ -111,6 +124,17 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
     for (const auto &enemy : m_enemyTanks) {
         enemy->update(m_player, deltaTime, spawnProjectile, canMoveTo);
     }
+
+    m_enemyTanks.erase(
+    std::remove_if(m_enemyTanks.begin(), m_enemyTanks.end(),
+        [](const auto &tank) {
+            if (!tank->isAlive()) {
+                return true;
+            }
+            return false;
+        }),
+    m_enemyTanks.end()
+    );
 }
 
 void TanksGame::playerShoot() {
