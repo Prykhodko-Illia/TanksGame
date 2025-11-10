@@ -6,8 +6,8 @@
 enum class BlockType {
     Empty = -1,
     Bush = 0,
-    Wood = 1,
-    Brick = 2,
+    Tree = 1,
+    Rock = 2,
     COUNT = 3
 };
 

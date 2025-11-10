@@ -43,12 +43,8 @@ void GameManager::run() {
             m_game.playerShoot();
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
-            m_game.spawnEnemy();
-        }
-
         m_renderer.clear();
-        m_renderer.draw(m_game.getEntitiesRenderInfo());
+        m_renderer.draw(m_game.getEntitiesRenderInfo(), m_game.getPlayerHealth(), m_game.getScore());
         m_renderer.display();
     }
 }

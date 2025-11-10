@@ -10,11 +10,11 @@ Block::Block(BlockType const type, const float posX, const float posY, const flo
             m_durability = 1;
             break;
 
-        case BlockType::Wood:
+        case BlockType::Tree:
             m_durability = 2;
             break;
 
-        case BlockType::Brick:
+        case BlockType::Rock:
             m_durability = 3;
             break;
 
@@ -45,13 +45,13 @@ EntityRenderInfo Block::getRenderInfo() const {
     std::string textureId{};
     switch (m_type) {
         case (BlockType::Bush):
-            textureId = "bushBlock";
+            textureId = "Bush";
             break;
-        case (BlockType::Wood):
-            textureId = "woodBlock";
+        case (BlockType::Tree):
+            textureId = "Tree";
             break;
-        case (BlockType::Brick):
-            textureId = "brickBlock";
+        case (BlockType::Rock):
+            textureId = "Rock";
             break;
         default:
             return {};

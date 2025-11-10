@@ -50,7 +50,7 @@ void TanksGame::validateEnemySpawnByTanks(std::vector<floatPair> &positions) {
 void TanksGame::init(const floatPair &windowSize) {
     {
         auto const playerTankF = PlayerTankFactory();
-        m_player = std::move(playerTankF.createTank(PLAYER_HEALTH, PLAYER_DAMAGE, {70, 50}, 0));
+        m_player = std::move(playerTankF.createTank(PLAYER_HEALTH, PLAYER_DAMAGE, {70, 150}, 0));
     }
 
     const auto playerPosition = m_player->getPosition();
@@ -65,6 +65,10 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
 
     for (const auto &p : m_projectiles) {
         p->update(deltaTime);
+    }
+
+    if (m_enemyTimerSpawn >= ENEMY_SPAWN_TIME) {
+        this->spawnEnemy();
     }
 
     m_projectiles.erase(
@@ -122,7 +126,7 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
     };
 
     auto canMoveTo = [this, windowSize](const EntityCollisionInfo& nextPos) {
-        return m_collisionManager.canTankMoveTo(nextPos, m_blocks, windowSize);
+        return m_collisionManager.canTankMoveTo(nextPos, m_blocks, m_enemyTanks, m_player, false, windowSize);
     };
 
     for (const auto &enemy : m_enemyTanks) {
@@ -131,14 +135,19 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
 
     m_enemyTanks.erase(
     std::remove_if(m_enemyTanks.begin(), m_enemyTanks.end(),
-        [](const auto &tank) {
+        [this](const auto &tank) {
             if (!tank->isAlive()) {
+                ++m_tanksKilled;
                 return true;
             }
             return false;
         }),
     m_enemyTanks.end()
     );
+
+    if (!m_player->isAlive()) {
+        exit(0);
+    }
 }
 
 void TanksGame::playerShoot() {
@@ -166,7 +175,7 @@ void TanksGame::playerMove(const std::string &direction, const float deltaTime, 
     nextPosition.posX += moveVector.first;
     nextPosition.posY += moveVector.second;
 
-    if (m_collisionManager.canTankMoveTo(nextPosition, m_blocks, windowSize)) {
+    if (m_collisionManager.canTankMoveTo(nextPosition, m_blocks, m_enemyTanks, m_player, true, windowSize)) {
         m_player->move(moveVector);
     }
 }
@@ -214,4 +223,12 @@ std::vector<EntityRenderInfo> TanksGame::getEntitiesRenderInfo() {
     info.push_back(m_player->getRenderInfo());
 
     return info;
+}
+
+int TanksGame::getPlayerHealth() const {
+    return m_player->getHealth();
+}
+
+int TanksGame::getScore() const {
+    return m_tanksKilled;
 }

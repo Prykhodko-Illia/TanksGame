@@ -14,7 +14,9 @@ bool CollisionManager::collides(const EntityCollisionInfo& obj1, const EntityCol
     return !(right1 <= left2 || left1 >= right2 || bottom1 <= top2 || top1 >= bottom2);
 }
 
-bool CollisionManager::canTankMoveTo(const EntityCollisionInfo& tankInfo, const std::vector<Block *> &blocks, floatPair windowSize) {
+bool CollisionManager::canTankMoveTo(const EntityCollisionInfo& tankInfo, const std::vector<Block*>& blocks,
+        const std::vector<std::unique_ptr<ITank>>& enemyTanks, const std::unique_ptr<ITank>& playerTank,
+        bool isPlayer, floatPair windowSize, const EntityCollisionInfo* selfInfo) {
     float left = tankInfo.posX;
     float right = tankInfo.posX + tankInfo.width;
     float top = tankInfo.posY;
@@ -26,6 +28,22 @@ bool CollisionManager::canTankMoveTo(const EntityCollisionInfo& tankInfo, const 
 
     for (const auto& block : blocks) {
         if (collides(tankInfo, block->getCollisionInfo())) {
+            return false;
+        }
+    }
+
+    if (!isPlayer && collides(tankInfo, playerTank->getCollisionInfo())) {
+        return false;
+    }
+
+    for (const auto& enemy : enemyTanks) {
+        EntityCollisionInfo enemyInfo = enemy->getCollisionInfo();
+
+        if (selfInfo && selfInfo->posX == enemyInfo.posX && selfInfo->posY == enemyInfo.posY) {
+            continue;
+        }
+
+        if (collides(tankInfo, enemyInfo)) {
             return false;
         }
     }

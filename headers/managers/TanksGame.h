@@ -15,7 +15,7 @@ private:
     static constexpr int ENEMY_HEALTH = 20;
     static constexpr int ENEMY_DAMAGE = 5;
     static constexpr float PROJECTILE_SPAWN_TIME = 1.0f;
-    static constexpr float ENEMY_SPAWN_TIME = 0.3f;
+    static constexpr float ENEMY_SPAWN_TIME = 4.0f;
     static constexpr int TANK_SPEED = 200;
     static constexpr int TANK_ROTATE_SPEED = 140;
 
@@ -28,6 +28,7 @@ private:
     std::vector<Block *> m_blocks{};
     float m_projectileTimerSpawn = 3.0f;
     float m_enemyTimerSpawn = 6.0f;
+    int m_tanksKilled = 0;
 
     std::vector<floatPair> getValidPositions();
     void validateEnemySpawnByTank(const std::unique_ptr<ITank> &tank, std::vector<floatPair> &positions, float radius);
@@ -42,5 +43,7 @@ public:
 
     void spawnEnemy();
     std::vector<EntityRenderInfo> getEntitiesRenderInfo();
+    int getPlayerHealth() const;
+    int getScore() const;
 };
 

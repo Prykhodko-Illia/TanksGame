@@ -72,7 +72,7 @@ EntityRenderInfo ITank::getRenderInfo() const {
         TANK_WIDTH,
         TANK_HEIGHT,
         1,
-        "playerTank",
+        m_textureId,
         true
     };
 

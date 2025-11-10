@@ -37,6 +37,14 @@ public:
 
         return was_loaded;
     }
+
+    valueType const& get(const std::string &name) const {
+        return m_data.at(name);
+    }
+
+    bool has(const std::string &name) const {
+        return m_data.find(name) != m_data.end();
+    }
 };
 
 template<typename manager_t>

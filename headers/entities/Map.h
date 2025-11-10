@@ -14,9 +14,8 @@ public:
     Map(int width, int height);
 
     Grid & getGrid();
-    void removeBlockAt(std::pair<int, int> position);
 
-    void printMap() const; /*temporary*/
+    void printMap() const; /*for debugging*/
     int getGridWidth() const;
     int getGridHeight() const;
 };
