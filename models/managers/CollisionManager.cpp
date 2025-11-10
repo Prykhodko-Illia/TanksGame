@@ -32,3 +32,12 @@ bool CollisionManager::canTankMoveTo(const EntityCollisionInfo& tankInfo, const 
 
     return true;
 }
+
+bool CollisionManager::isOutOfBounds(const EntityCollisionInfo& entityInfo, const floatPair &windowSize) {
+    float left = entityInfo.posX;
+    float right = entityInfo.posX + entityInfo.width;
+    float top = entityInfo.posY;
+    float bottom = entityInfo.posY + entityInfo.height;
+
+    return left < 0 || right > windowSize.first || top < 0 || bottom > windowSize.second;
+}

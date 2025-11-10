@@ -67,6 +67,15 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
         p->update(deltaTime);
     }
 
+    m_projectiles.erase(
+    std::remove_if(m_projectiles.begin(), m_projectiles.end(),
+        [this, windowSize](const std::unique_ptr<Projectile>& projectile) {
+            return m_collisionManager.isOutOfBounds(projectile->getCollisionInfo(), windowSize);
+        }),
+    m_projectiles.end()
+    );
+
+
     auto spawnProjectile = [this](std::unique_ptr<Projectile> projectile) {
         m_projectiles.push_back(std::move(projectile));
     };

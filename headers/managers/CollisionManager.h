@@ -12,4 +12,5 @@ private:
     bool collides(const EntityCollisionInfo &obj1, const EntityCollisionInfo &obj2);
 public:
     bool canTankMoveTo(const EntityCollisionInfo& tankInfo, const std::vector<Block *> &blocks, floatPair windowSize);
+    bool isOutOfBounds(const EntityCollisionInfo& entityInfo, const floatPair &windowSize);
 };
