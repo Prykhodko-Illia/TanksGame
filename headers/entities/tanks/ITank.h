@@ -1,0 +1,49 @@
+﻿#pragma once
+#include <utility>
+#include <cmath>
+#include <functional>
+#include "../../../structs/EntityRenderInfo.h"
+#include "../../../headers/factories/ProjectileFactory.h"
+#include "../../entities/Irenderable.h"
+#include "../../entities/ICollisive.h"
+
+
+class ITank : public IRenderable, public ICollisive {
+public:
+    using floatPair = std::pair<float, float>;
+    using ProjectileCallBack = std::function<void(std::unique_ptr<Projectile>)>;
+    using MovementValidator = std::function<bool(const EntityCollisionInfo &)>;
+
+    ITank(int health, int damage, floatPair position, float rotation);
+    virtual ~ITank() = default;
+    virtual void update(const std::unique_ptr<ITank> &player, float deltaTime,
+        ProjectileCallBack onShoot = nullptr, MovementValidator canMoveTo = nullptr) = 0;
+    virtual void takeDamage(int amount) = 0;
+
+    std::unique_ptr<Projectile> shoot(ProjectileType type) const;
+    void move(floatPair const &moveVector);
+    void rotate(float value);
+
+    int getHealth() const;
+    void setHealth(int value);
+
+    int getDamage() const;
+    void setDamage(int value);
+
+    bool isAlive() const;
+
+    floatPair getPosition() const;
+    float getRotation() const;
+    EntityRenderInfo getRenderInfo() const final;
+    EntityCollisionInfo getCollisionInfo() const final;
+
+private:
+    int m_health = 0;
+    int m_damage = 0;
+
+    float m_rotation = 0;
+    floatPair m_position{};
+
+    static constexpr float TANK_WIDTH = 46.0f;
+    static constexpr float TANK_HEIGHT = 36.0f;
+};
