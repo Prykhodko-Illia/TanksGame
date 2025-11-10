@@ -70,9 +70,33 @@ void TanksGame::update(const float deltaTime, const floatPair &windowSize) {
     m_projectiles.erase(
     std::remove_if(m_projectiles.begin(), m_projectiles.end(),
         [this, windowSize](const std::unique_ptr<Projectile>& projectile) {
-            return m_collisionManager.isOutOfBounds(projectile->getCollisionInfo(), windowSize);
+            if (m_collisionManager.isOutOfBounds(projectile->getCollisionInfo(), windowSize)) {
+                return true;
+            }
+
+            EntityCollisionInfo projInfo = projectile->getCollisionInfo();
+                for (auto& block : m_blocks) {
+                    if (m_collisionManager.collides(projInfo, block->getCollisionInfo())) {
+                block->takeDamage();
+                return true;
+                }
+            }
+
+            return false;
         }),
     m_projectiles.end()
+    );
+
+    m_blocks.erase(
+    std::remove_if(m_blocks.begin(), m_blocks.end(),
+        [](const Block* block) {
+            if (!block->isAlive()) {
+                delete block;
+                return true;
+            }
+            return false;
+        }),
+    m_blocks.end()
     );
 
 
